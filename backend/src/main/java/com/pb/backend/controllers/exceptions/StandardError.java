@@ -1,14 +1,21 @@
 package com.pb.backend.controllers.exceptions;
 
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.time.Instant;
 
 @SuppressWarnings("unused")
+@Schema(description = "Estrutura de resposta para erros")
 public class StandardError {
+    @Schema(description = "Timestamp do erro", example = "2024-01-15T10:30:00Z")
     private Instant timestamp;
+    @Schema(description = "Código de status HTTP", example = "404")
     private Integer status;
     private String error;
+    @Schema(description = "Mensagem de erro", example = "Pedido não encontrado")
     private String message;
+    @Schema(description = "Caminho da requisição", example = "/api/v1/pedidos/123")
     private String path;
 
     public StandardError() {
