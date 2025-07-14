@@ -2,6 +2,9 @@ package com.pb.backend.dto;
 
 import com.pb.backend.entities.Order;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 
 import java.time.Instant;
 
@@ -15,18 +18,23 @@ public class OrderDTO {
     private Instant moment;
 
     @Schema(description = "Status do pedido", example = "PENDING")
+    @NotBlank(message = "Status é requerido")
     private String status;
 
     @Schema(description = "Nome do cliente", example = "Thanos")
+    @NotBlank(message = "Nome do cliente é requerido")
     private String customer;
 
     @Schema(description = "Nome do produto", example = "MacBook")
+    @NotBlank(message = "Nome do produto é requerido")
     private String product;
 
     @Schema(description = "Quantidade do produto", example = "2", minimum = "1")
+    @Positive(message = "Quantidade deve ser maior que zero")
     private Integer quantity;
 
     @Schema(description = "Preço unitário do produto", example = "1500.00", minimum = "0.01")
+    @PositiveOrZero(message = "Preço deve ser maior que zero")
     private Double price;
 
     public OrderDTO() {

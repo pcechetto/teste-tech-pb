@@ -1,5 +1,6 @@
 package com.pb.backend.controllers;
 
+import com.pb.backend.controllers.exceptions.ValidationError;
 import com.pb.backend.dto.OrderDTO;
 import com.pb.backend.services.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -8,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -43,9 +45,16 @@ public class OrderController {
                     responseCode = "500",
                     description = "Erro interno do servidor",
                     content = @Content(mediaType = "application/json")
+            ),
+            @ApiResponse(
+                    responseCode = "422",
+                    description = "Erro de validação",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ValidationError.class))
             )
     })
-    public ResponseEntity<OrderDTO> createOrder(@RequestBody OrderDTO dto) {
+    public ResponseEntity<OrderDTO> createOrder(@Valid @RequestBody OrderDTO dto) {
         dto = orderService.save(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
         return ResponseEntity.created(uri).body(dto);
