@@ -23,6 +23,16 @@ services:
     networks:
       - spring-network
 
+  frontend:
+    build: ../frontend/order-management
+    container_name: order-management-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - spring-app
+    networks:
+      - spring-network
+
 volumes:
   mongodb_data:
     driver: local
